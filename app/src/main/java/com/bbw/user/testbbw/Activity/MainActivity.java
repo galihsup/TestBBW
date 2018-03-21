@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -57,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
         pd.setMessage("Loading...");
         pd.show();
         String url = Constant.BASE_URL;
-        Log.d("url : ",url);
         final String username = etUsername.getText().toString();
         final String password = etPassword.getText().toString();
         StringRequest req = new StringRequest(Request.Method.POST, url, successListener(), errListener()){
@@ -79,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public  void onErrorResponse(VolleyError error) {
                 pd.dismiss();
-                Log.e("Error", String.valueOf(error));
                 Toast.makeText(MainActivity.this, String.valueOf(error), Toast.LENGTH_SHORT).show();
             }
         };
@@ -91,11 +88,8 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 pd.dismiss();
                 try{
-                    Log.d("response", response);
                     JSONObject json = new JSONObject(response);
                     String message = json.getString("msg");
-
-                    Log.d("message", message);
                     if (json.getString("status").equals("1")) {
                         String userid = json.getString("userid");
                         Intent intent;

@@ -8,7 +8,6 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -57,7 +56,6 @@ public class TransactionActivity extends AppCompatActivity {
 
         final SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         userID = sharedPrefs.getString(Constant.KEY_SHAREDPREFS_USERID, null);
-        Log.d("useridd : ",userID);
         tvHarga = (TextView) findViewById(R.id.tv_harga_pulsa);
         tiePhone = (TextInputEditText) findViewById(R.id.tie_phone);
         tieOperator = (TextInputEditText) findViewById(R.id.tie_operator);
@@ -116,7 +114,6 @@ public class TransactionActivity extends AppCompatActivity {
         pd.setMessage("Loading...");
         pd.show();
         String url = Constant.BASE_URL;
-        Log.d("url : ",url);
         StringRequest req = new StringRequest(Request.Method.POST, url, successListener(), errListener()){
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
@@ -133,7 +130,6 @@ public class TransactionActivity extends AppCompatActivity {
             @Override
             public  void onErrorResponse(VolleyError error) {
                 pd.dismiss();
-                Log.e("Error", String.valueOf(error));
                 Toast.makeText(TransactionActivity.this, String.valueOf(error), Toast.LENGTH_SHORT).show();
             }
         };
@@ -145,10 +141,8 @@ public class TransactionActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 pd.dismiss();
                 try{
-                    Log.d("response", response);
                     JSONObject json = new JSONObject(response);
                     String message = json.getString("msg");
-                    Log.d("message", message);
                     if (json.getString("status").equals("0")) {
                         String jsonOutput = json.getString("operator");
                         Type listType = new TypeToken<List<OperatorModel>>(){}.getType();
@@ -176,7 +170,6 @@ public class TransactionActivity extends AppCompatActivity {
         pd.setMessage("Loading...");
         pd.show();
         String url = Constant.BASE_URL;
-        Log.d("url : ",url);
         StringRequest req = new StringRequest(Request.Method.POST, url, listenerSuccess(), errListener()){
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
@@ -195,10 +188,8 @@ public class TransactionActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 pd.dismiss();
                 try{
-                    Log.d("response", response);
                     JSONObject json = new JSONObject(response);
                     String message = json.getString("msg");
-                    Log.d("message", message);
                     if (json.getString("status").equals("1")) {
                         String jsonOutput = json.getString("voucher");
                         Type listType = new TypeToken<List<PulsaModel>>(){}.getType();
@@ -226,7 +217,6 @@ public class TransactionActivity extends AppCompatActivity {
         pd.setMessage("Loading...");
         pd.show();
         String url = Constant.BASE_URL;
-        Log.d("url : ",url);
         StringRequest req = new StringRequest(Request.Method.POST, url, listenSuccess(), errListener()){
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
@@ -247,10 +237,8 @@ public class TransactionActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 pd.dismiss();
                 try{
-                    Log.d("response", response);
                     JSONObject json = new JSONObject(response);
                     String message = json.getString("msg");
-                    Log.d("message", message);
                     if (json.getString("status").equals("1")) {
                         Toast.makeText(TransactionActivity.this,message,Toast.LENGTH_LONG).show();
                         tiePhone.setText("");
