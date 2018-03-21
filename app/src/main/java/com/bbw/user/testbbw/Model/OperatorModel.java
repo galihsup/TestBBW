@@ -1,4 +1,4 @@
-package com.bbw.user.testbbw;
+package com.bbw.user.testbbw.Model;
 
 import com.google.gson.annotations.SerializedName;
 /**

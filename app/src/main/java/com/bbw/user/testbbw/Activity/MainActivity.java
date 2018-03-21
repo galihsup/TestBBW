@@ -1,4 +1,4 @@
-package com.bbw.user.testbbw;
+package com.bbw.user.testbbw.Activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -17,6 +17,8 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.bbw.user.testbbw.R;
+import com.bbw.user.testbbw.Util.AppsController;
 import com.bbw.user.testbbw.Util.Constant;
 
 import org.json.JSONException;
