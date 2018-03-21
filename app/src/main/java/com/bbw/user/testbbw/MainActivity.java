@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
                         String userid = json.getString("userid");
                         Intent intent;
                         editor.putString(Constant.KEY_SHAREDPREFS_LOGIN_STATUS, "1");
-                        editor.putString(Constant.KEY_SHAREDPREFS_LOGIN_STATUS, userid);
+                        editor.putString(Constant.KEY_SHAREDPREFS_USERID, userid);
                         editor.commit();
                         Toast.makeText(MainActivity.this,message,Toast.LENGTH_LONG).show();
                         intent = new Intent(MainActivity.this, TransactionActivity.class);
