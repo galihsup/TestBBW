@@ -42,12 +42,12 @@ public class TransactionActivity extends AppCompatActivity {
     TextInputEditText tiePhone,tieOperator,tiePulsa;
     Button btnSimpan;
     ProgressDialog pd;
-    List<OperatorModel> list_operator = new ArrayList<>();
-    CharSequence data_operator[];
-    List<PulsaModel> list_pulsa = new ArrayList<>();
-    CharSequence data_pulsa[];
+    List<OperatorModel> listOperator = new ArrayList<>();
+    CharSequence dataOperator[];
+    List<PulsaModel> listPulsa = new ArrayList<>();
+    CharSequence dataPulsa[];
     Gson gson;
-    String getUserID;
+    String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +56,8 @@ public class TransactionActivity extends AppCompatActivity {
         gson = new Gson();
 
         final SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        getUserID = sharedPrefs.getString(Constant.KEY_SHAREDPREFS_USERID, null);
-        Log.d("useridd : ",getUserID);
+        userID = sharedPrefs.getString(Constant.KEY_SHAREDPREFS_USERID, null);
+        Log.d("useridd : ",userID);
         tvHarga = (TextView) findViewById(R.id.tv_harga_pulsa);
         tiePhone = (TextInputEditText) findViewById(R.id.tie_phone);
         tieOperator = (TextInputEditText) findViewById(R.id.tie_operator);
@@ -71,11 +71,11 @@ public class TransactionActivity extends AppCompatActivity {
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(TransactionActivity.this);
                 builder.setTitle("-- Pilih Operator --");
-                builder.setItems(data_operator, new DialogInterface.OnClickListener() {
+                builder.setItems(dataOperator, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        tieOperator.setText(data_operator[i]);
-                        getPulsa(data_operator[i].toString());
+                        tieOperator.setText(dataOperator[i]);
+                        getPulsa(dataOperator[i].toString());
                         tiePulsa.setText("Pulsa");
                         tvHarga.setText("-");
                         tiePulsa.setEnabled(true);
@@ -91,11 +91,11 @@ public class TransactionActivity extends AppCompatActivity {
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(TransactionActivity.this);
                 builder.setTitle("-- Pilih Voucher Pulsa --");
-                builder.setItems(data_pulsa, new DialogInterface.OnClickListener() {
+                builder.setItems(dataPulsa, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        tiePulsa.setText(data_pulsa[i]);
-                        tvHarga.setText(list_pulsa.get(i).getHarga());
+                        tiePulsa.setText(dataPulsa[i]);
+                        tvHarga.setText(listPulsa.get(i).getHarga());
                     }
                 });
                 AlertDialog dialog = builder.create();
@@ -152,8 +152,8 @@ public class TransactionActivity extends AppCompatActivity {
                     if (json.getString("status").equals("0")) {
                         String jsonOutput = json.getString("operator");
                         Type listType = new TypeToken<List<OperatorModel>>(){}.getType();
-                        list_operator = (List<OperatorModel>) gson.fromJson(jsonOutput, listType);
-                        isiOperator();
+                        listOperator = (List<OperatorModel>) gson.fromJson(jsonOutput, listType);
+                        putOperator();
                     } else {
                         Toast.makeText(TransactionActivity.this,message,Toast.LENGTH_LONG).show();
                     }
@@ -164,10 +164,10 @@ public class TransactionActivity extends AppCompatActivity {
         };
     }
 
-    private void isiOperator(){
-        data_operator = new CharSequence[list_operator.size()];
-        for(int i = 0; i<list_operator.size(); i++){
-            data_operator[i] = list_operator.get(i).getNama();
+    private void putOperator(){
+        dataOperator = new CharSequence[listOperator.size()];
+        for(int i = 0; i<listOperator.size(); i++){
+            dataOperator[i] = listOperator.get(i).getNama();
         }
     }
 
@@ -202,8 +202,8 @@ public class TransactionActivity extends AppCompatActivity {
                     if (json.getString("status").equals("1")) {
                         String jsonOutput = json.getString("voucher");
                         Type listType = new TypeToken<List<PulsaModel>>(){}.getType();
-                        list_pulsa = (List<PulsaModel>) gson.fromJson(jsonOutput, listType);
-                        isiPulsa();
+                        listPulsa = (List<PulsaModel>) gson.fromJson(jsonOutput, listType);
+                        putPulsa();
                     } else {
                         Toast.makeText(TransactionActivity.this,message,Toast.LENGTH_LONG).show();
                     }
@@ -214,10 +214,10 @@ public class TransactionActivity extends AppCompatActivity {
         };
     }
 
-    private void isiPulsa(){
-        data_pulsa = new CharSequence[list_pulsa.size()];
-        for(int i = 0; i<list_pulsa.size(); i++){
-            data_pulsa[i] = list_pulsa.get(i).getPulsa();
+    private void putPulsa(){
+        dataPulsa = new CharSequence[listPulsa.size()];
+        for(int i = 0; i<listPulsa.size(); i++){
+            dataPulsa[i] = listPulsa.get(i).getPulsa();
         }
     }
 
@@ -232,7 +232,7 @@ public class TransactionActivity extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 params.put("type", "transaction");
-                params.put("userid", getUserID);
+                params.put("userid", userID);
                 params.put("operator", tieOperator.getText().toString());
                 params.put("harga", tvHarga.getText().toString());
                 return params;
